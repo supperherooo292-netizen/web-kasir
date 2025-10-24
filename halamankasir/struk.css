@@ -1,0 +1,33 @@
+    body {
+      font-family: monospace;
+      width: 360px;
+      margin: 20px auto;
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 10px;
+      background: #fff;
+    }
+    h2, h3 { text-align: center; margin: 5px 0; }
+    .center { text-align: center; }
+    hr { border: none; border-top: 1px dashed #000; margin: 5px 0; }
+    table { width: 100%; border-collapse: collapse; }
+    td { font-size: 14px; padding: 2px 0; }
+    .right { text-align: right; }
+    .total { font-weight: bold; }
+    button, input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button.print {
+      background-color: #2196F3;
+    }

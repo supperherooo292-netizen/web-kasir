@@ -2,15 +2,12 @@
 session_start();
 include '../koneksi.php';
 
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'kasir') {
   header('Location: ../login.php');
   exit();
 }
 
-$sql = "SELECT p.id_produk, p.gambar, p.nama, k.kategori, p.stok, p.harga, p.tipe 
-        FROM produk p 
-        JOIN kategori k ON p.id_kategori = k.id_kategori 
-        WHERE k.kategori = 'Makanan'";
+$sql = "SELECT * FROM keranjang";
 $result = mysqli_query($conn, $sql);
 mysqli_next_result($conn);
 $kategori = mysqli_query($conn, "SELECT * FROM kategori;");
@@ -22,7 +19,7 @@ $kategori = mysqli_query($conn, "SELECT * FROM kategori;");
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Halaman Pertama</title>
-  <link rel="stylesheet" href="makanan.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="keranjang.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
@@ -34,8 +31,8 @@ $kategori = mysqli_query($conn, "SELECT * FROM kategori;");
 
     <div class="container">
       <div class="sidebar">
-        <button onclick="window.location.href='admin.php'">Dashboard</button>
-        <button onclick="window.location.href='daftar-akun.php'">Daftar Akun</button>
+        <button onclick="window.location.href='kasir.php'">Dashboard</button>
+        <button onclick="window.location.href='keranjang.php'">Keranjang</button>
         <button onclick="showprofil()">Profil</button>
         <button onclick="logout()">Log Out</button>
       </div>
@@ -43,45 +40,26 @@ $kategori = mysqli_query($conn, "SELECT * FROM kategori;");
       <div class="produk">
         <div class="produk-head">
           <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
-            <div style="display: flex;">
-              <h2 style="margin-right:10px;">List Produk</h2>
-
-              <div class="dropdown">
-                <button onclick="toggleDropdown()" class="dropdown-btn">Menu ▼</button>
-                <div id="dropdownMenu" class="dropdown-content">
-                  <a href="admin.php">Semua Produk</a>
-                  <a href="makanan.php">Makanan</a>
-                  <a href="minuman.php">Minuman</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="search-produk">
-              <form action="" method="GET">
-                <input type="text" name="query" placeholder="Cari produk..." required>
-                <button type="submit"><i class="fa fa-search"></i></button>
-              </form>
-            </div>
-
-            <button onclick="showtambah()" class="btntambah">Tambah Produk</button>
+              <h2 style="margin-right:10px;">Keranjang<i class="fa-solid fa-cart-shopping"></i></h2>
           </div>
         </div>
 
         <table class="tabel">
           <tr>
-            <th>ID Produk</th>
+            <th>No</th>
             <th>Gambar</th>
             <th>Nama</th>
             <th>Kategori</th>
-            <th>Stok</th>
+            <th>qty</th>
             <th>Harga</th>
             <th>Hapus</th>
-            <th>Edit</th>
           </tr>
-
-          <?php while ($row = mysqli_fetch_assoc($result)) : ?>
+          <?php 
+          $no = 1;
+          while ($row = mysqli_fetch_assoc($result)) : 
+          ?>
             <tr>
-              <td><?= $row['id_produk'] ?></td>
+              <td><?= $no++?></td>
               <td>
                 <?php if (!empty($row['gambar'])): ?>
                   <img src="data:<?= !empty($row['tipe']) ? $row['tipe'] : 'image/jpeg' ?>;base64,<?= base64_encode($row['gambar']) ?>" alt="Gambar Produk">
@@ -89,22 +67,28 @@ $kategori = mysqli_query($conn, "SELECT * FROM kategori;");
                   Tidak ada gambar
                 <?php endif; ?>
               </td>
-              <td><?= $row['nama'] ?></td>
-              <td><?= $row['kategori'] ?></td>
-              <td><?= $row['stok'] ?></td>
+              <td><?= $row['nama_produk'] ?></td>
+              <td><?= $row['id_kategori'] ?></td>
+              
+              <!-- Form Edit Jumlah -->
+              <td>
+              <form action="proses.php" method="POST" class="edit">
+                <input type="hidden" name="id_produk" value="<?= $row['id_produk'] ?>">
+                <input type="number" name="jumlah" value="<?= $row['jumlah'] ?>" min="1" class="jumlah">
+                <button type="submit" name="update_jumlah" class="btnedit">Update</button>
+              </form>
+              </td>
               <td>Rp<?= $row['harga'] ?></td>
               <td>
-                <form action="proses.php" method="POST" style="display:inline;">
-                  <input type="hidden" name="id_produk" value="<?= $row['id_produk'] ?>">
-                  <button class="btnhapus" type="submit" name="hapus" onclick="return confirm('Yakin ingin menghapus produk ini?')">Hapus</button>
-                </form>
-              </td>
-              <td>
-                <button class="btnedit" type="submit" name="btn-edit" onclick="window.location.href='edit-produk.php?id=<?= $row['id_produk']; ?>'">Edit</button>
+              <form action="proses.php?v=<?php echo time(); ?>" method="POST" onsubmit="return confirm('Yakin ingin menghapus pesanan ini?')">
+              <input type="hidden" name="id_produk" value="<?= $row['id_produk'] ?>">
+              <button class="btnhapus" type="submit" name="hapus_pesanan">Hapus</button>
+              </form>
               </td>
             </tr>
           <?php endwhile; ?>
         </table>
+        <button class="btnbeli" onclick="konfirmasiBeli()">Buy</button>
       </div>
     </div>
   </div>

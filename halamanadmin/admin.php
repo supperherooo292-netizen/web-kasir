@@ -54,7 +54,7 @@ $kategori = mysqli_query($conn, "SELECT * FROM kategori;");
             </div>
 
             <div class="search-produk">
-              <form action="search.php" method="GET">
+              <form action="" method="GET">
                 <input type="text" name="query" placeholder="Cari produk..." required>
                 <button type="submit"><i class="fa fa-search"></i></button>
               </form>

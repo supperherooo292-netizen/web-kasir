@@ -30,6 +30,7 @@ if (isset($_POST['tambah'])) {
     }
 }
 
+// proses hapus produk
 if (isset($_POST['hapus'])) {
     $id_produk = $_POST['id_produk'];
 
@@ -43,6 +44,7 @@ if (isset($_POST['hapus'])) {
     }
 }
 
+// proses hapus akun
 if (isset($_POST['hapus-akun'])) {
     $id_user = $_POST['id_user'];
 

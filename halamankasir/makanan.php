@@ -58,7 +58,10 @@ if (isset($_POST['tambah_keranjang'])) {
 }
 
 
-$sql = "SELECT * FROM produk";
+$sql = "SELECT p.id_produk, p.gambar, p.nama, k.kategori, p.stok, p.harga, p.tipe 
+        FROM produk p 
+        JOIN kategori k ON p.id_kategori = k.id_kategori 
+        WHERE k.kategori = 'Makanan'";
 $result = mysqli_query($conn, $sql);
 mysqli_next_result($conn);
 $kategori = mysqli_query($conn, "SELECT * FROM kategori;");

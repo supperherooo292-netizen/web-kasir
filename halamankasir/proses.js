@@ -29,3 +29,49 @@ function logout() {
     window.location.href = "../login.php";
   }
 }
+
+// =======================
+// 🔍 FITUR SEARCH PRODUK (klik tombol, hasil rapat ke kiri atas)
+// =======================
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector(".search-produk form");
+  const input = form.querySelector('input[name="query"]');
+  const produkCards = document.querySelectorAll(".produk .card");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault(); // cegah reload halaman
+
+    const query = input.value.toLowerCase();
+
+    produkCards.forEach(card => {
+      const namaProduk = card.querySelector("h3").textContent.toLowerCase();
+      const hargaProduk = card.querySelector("p").textContent.toLowerCase();
+
+      // tampilkan semua jika input kosong
+      if (query === "") {
+        card.style.display = "flex";
+        card.style.opacity = "1";
+        card.style.transform = "scale(1)";
+      }
+      // tampilkan hanya yang cocok
+      else if (namaProduk.includes(query) || hargaProduk.includes(query)) {
+        card.style.display = "flex";
+        card.style.opacity = "1";
+        card.style.transform = "scale(1)";
+      } 
+      // sembunyikan yang tidak cocok
+      else {
+        card.style.display = "none";
+      }
+    });
+  });
+});
+
+function konfirmasiBeli() {
+  const yakin = confirm("Apakah Anda yakin ingin melanjutkan ke pembayaran dan mencetak struk?");
+  if (yakin) {
+    window.location.href = 'struk.php';
+  } else {
+    alert("Transaksi dibatalkan.");
+  }
+}

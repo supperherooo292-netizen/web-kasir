@@ -3,14 +3,14 @@ session_start();
 include '../koneksi.php';
 
 if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../login.php');
-    exit();
+  header('Location: ../login.php');
+  exit();
 }
 
 $sql = "SELECT p.id_produk, p.gambar, p.nama, k.kategori, p.stok, p.harga, p.tipe 
         FROM produk p 
         JOIN kategori k ON p.id_kategori = k.id_kategori 
-        WHERE k.kategori = 'Minuman'";
+        WHERE k.kategori = 'minuman'";
 $result = mysqli_query($conn, $sql);
 mysqli_next_result($conn);
 $kategori = mysqli_query($conn, "SELECT * FROM kategori;");
@@ -22,7 +22,7 @@ $kategori = mysqli_query($conn, "SELECT * FROM kategori;");
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Halaman Pertama</title>
-  <link rel="stylesheet" href="admin.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="makanan.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
@@ -42,20 +42,29 @@ $kategori = mysqli_query($conn, "SELECT * FROM kategori;");
 
       <div class="produk">
         <div class="produk-head">
-          <div style="display: flex;">
-            <h2 style="margin-right:10px;">List Produk</h2>
+          <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            <div style="display: flex;">
+              <h2 style="margin-right:10px;">List Produk</h2>
 
-            <div class="dropdown">
-              <button onclick="toggleDropdown()" class="dropdown-btn">Menu ▼</button>
-              <div id="dropdownMenu" class="dropdown-content">
-                <a href="admin.php">Semua Produk</a>
-                <a href="makanan.php">Makanan</a>
-                <a href="minuman.php">Minuman</a>
+              <div class="dropdown">
+                <button onclick="toggleDropdown()" class="dropdown-btn">Menu ▼</button>
+                <div id="dropdownMenu" class="dropdown-content">
+                  <a href="admin.php">Semua Produk</a>
+                  <a href="makanan.php">Makanan</a>
+                  <a href="minuman.php">Minuman</a>
+                </div>
               </div>
             </div>
-          </div>
 
-          <button onclick="showtambah()" class="btntambah">Tambah Produk</button>
+            <div class="search-produk">
+              <form action="" method="GET">
+                <input type="text" name="query" placeholder="Cari produk..." required>
+                <button type="submit"><i class="fa fa-search"></i></button>
+              </form>
+            </div>
+
+            <button onclick="showtambah()" class="btntambah">Tambah Produk</button>
+          </div>
         </div>
 
         <table class="tabel">

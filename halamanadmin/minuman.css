@@ -148,6 +148,40 @@ body {
 .dropdown-content a:hover { background-color: #f1f1f1; }
 .show { display: block; }
 
+.search-produk{
+  margin-left: auto;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  width: 500px;
+}
+
+.search-produk input {
+  border: none;
+  padding: 8px;
+  font-size: 16px;
+  outline: none;
+  width: 450px;
+  height: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.search-produk button {
+  background: #1e40af;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  height: 40px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.search-produk button:hover {
+  background: #290f60;
+}
+
 .btntambah {
   background-color: #2ecc71;
   color: white;
@@ -245,9 +279,9 @@ body {
 }
 
 .tabel img {
-  max-width: 100px;
-  height: auto;
-  border-radius: 5px;
+  width: 50%;
+        height: 80px;
+        object-fit: cover;
 }
 
 .btnhapus {
